@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Get Ready for Something Amazing!</title>
+    <style>
+        /* General Styles */
+        body, html {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: radial-gradient(circle, #0f2027, #203a43, #2c5364);
+            font-family: 'Arial', sans-serif;
+            text-align: center;
+            color: white;
+            overflow: hidden;
+        }
+
+        /* Main Container */
+        #main-container {
+            max-width: 600px;
+        }
+
+        /* Bold Heading */
+        .heading {
+            font-size: 30px;
+            font-weight: bold;
+            text-transform: uppercase;
+            margin-bottom: 10px;
+            background: linear-gradient(90deg, #ffcc00, #ff6600);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: fadeIn 2s ease-in-out;
+        }
+
+        /* Dopamine-Boosting Motivational Text */
+        .motivational-text {
+            font-size: 18px;
+            font-style: italic;
+            color: #ffcc00;
+            animation: pulse 2s infinite alternate;
+        }
+
+        /* Timer Container */
+        #timer-container {
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        /* Countdown Timer */
+        #timer {
+            font-size: 100px;
+            font-weight: bold;
+            color: #ffcc00;
+            text-shadow: 0 0 15px rgba(255, 255, 255, 0.9);
+            transition: transform 0.5s ease-in-out, color 0.5s;
+            animation: glow 1s infinite alternate;
+        }
+
+        /* Circular Progress Bar */
+        #progress-circle {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) rotate(-90deg);
+        }
+
+        /* Animated Progress Bar */
+        #progress-bar {
+            transition: stroke-dashoffset 1s linear;
+        }
+
+        /* Redirect Message */
+        .message {
+            font-size: 20px;
+            margin-top: 10px;
+        }
+
+        /* Animations */
+        @keyframes glow {
+            0% { text-shadow: 0 0 20px rgba(255, 255, 255, 1); }
+            100% { text-shadow: 0 0 40px rgba(255, 255, 255, 0.6); }
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            100% { transform: scale(1.05); }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Confetti Canvas */
+        #confetti {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Main Container -->
+    <div id="main-container">
+        <h1 class="heading">🚀 Something Exciting is Coming! 🚀</h1>
+        <p class="motivational-text">"Success is near! Get ready to experience something incredible. Your journey to greatness starts now!"</p>
+
+        <!-- Timer Container -->
+        <div id="timer-container">
+            <svg id="progress-circle" width="200" height="200">
+                <circle cx="100" cy="100" r="90" stroke="rgba(255, 255, 255, 0.2)" stroke-width="6" fill="none"></circle>
+                <circle id="progress-bar" cx="100" cy="100" r="90" stroke="#ffcc00" stroke-width="6" fill="none" stroke-dasharray="565.48" stroke-dashoffset="0"></circle>
+            </svg>
+            <div id="timer">10</div>
+            <p class="message">Redirecting in <span id="time-left">10</span> seconds...</p>
+        </div>
+    </div>
+
+    <!-- Confetti Effect -->
+    <canvas id="confetti"></canvas>
+
+    <!-- Audio -->
+    <audio id="beep-sound" src="beep.mp3"></audio>
+    <audio id="success-sound" src="success.mp3"></audio>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            let timeLeft = 10;
+            let timerElement = document.getElementById("timer");
+            let timeText = document.getElementById("time-left");
+            let progressBar = document.getElementById("progress-bar");
+            let totalLength = 565.48;
+            let beepSound = document.getElementById("beep-sound");
+            let successSound = document.getElementById("success-sound");
+
+            function updateTimer() {
+                if (timeLeft > 0) {
+                    timerElement.textContent = timeLeft;
+                    timeText.textContent = timeLeft;
+                    progressBar.style.strokeDashoffset = totalLength * (timeLeft / 10);
+
+                    beepSound.play();
+                    timerElement.classList.add("shrink");
+                    setTimeout(() => { 
+                        timerElement.classList.remove("shrink"); 
+                    }, 500);
+
+                    timeLeft--;
+                    setTimeout(updateTimer, 1000);
+                } else {
+                    successSound.play();
+                    launchConfetti();
+                    setTimeout(() => { window.location.href = "about.html"; }, 2000);
+                }
+            }
+
+            updateTimer();
+        });
+
+        /* Confetti Effect */
+        function launchConfetti() {
+            const canvas = document.getElementById("confetti");
+            const ctx = canvas.getContext("2d");
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+
+            let confetti = [];
+            for (let i = 0; i < 200; i++) {
+                confetti.push({
+                    x: Math.random() * canvas.width,
+                    y: Math.random() * canvas.height,
+                    r: Math.random() * 6 + 2,
+                    dx: Math.random() * 4 - 2,
+                    dy: Math.random() * 4 - 2,
+                    color: `hsl(${Math.random() * 360}, 100%, 50%)`
+                });
+            }
+
+            function drawConfetti() {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                confetti.forEach((p, i) => {
+                    ctx.beginPath();
+                    ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2, false);
+                    ctx.fillStyle = p.color;
+                    ctx.fill();
+                    p.x += p.dx;
+                    p.y += p.dy;
+                });
+                requestAnimationFrame(drawConfetti);
+            }
+
+            drawConfetti();
+        }
+    </script>
+
+</body>
+</html>
