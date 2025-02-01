@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Get Ready for Something Amazing!</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+    <!-- Main Container -->
+    <div id="main-container">
+        <h1 class="heading">🚀 Something Exciting is Coming! 🚀</h1>
+        <p class="motivational-text">"Success is near! Get ready to experience something incredible. Your journey to greatness starts now!"</p>
+
+        <!-- Timer Container -->
+        <div id="timer-container">
+            <svg id="progress-circle" width="200" height="200">
+                <circle cx="100" cy="100" r="90" stroke="rgba(255, 255, 255, 0.2)" stroke-width="6" fill="none"></circle>
+                <circle id="progress-bar" cx="100" cy="100" r="90" stroke="#ffcc00" stroke-width="6" fill="none" stroke-dasharray="565.48" stroke-dashoffset="0"></circle>
+            </svg>
+            <div id="timer">10</div>
+            <p class="message">Redirecting in <span id="time-left">10</span> seconds...</p>
+        </div>
+    </div>
+
+    <!-- Confetti Effect -->
+    <canvas id="confetti"></canvas>
+
+    <audio id="beep-sound" src="beep.mp3"></audio>
+    <audio id="success-sound" src="success.mp3"></audio>
+
+    <script src="script.js"></script>
+</body>
+</html>
